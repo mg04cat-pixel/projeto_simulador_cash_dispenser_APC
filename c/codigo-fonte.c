@@ -9,15 +9,16 @@ int main () {
     struct tm *info = localtime(&agora); // converte para data e hora local
 
     // VARIAVEIS
-    char data[11];
+    char data[20];
     int opcao_menu; // Qual opção será selecionada no menu
     int valores_notas[4] = {10,20,50,100}; // Valores disponíveis de notas
     int qtde_notas[4] = {0,0,0,0}; // Quantidade de notas
     int i; // Para loops
     int adicionar; // Manipulação de abastecimento de notas
-    char linha[20]; // Leitura de stdin
-    int valor_saque, resto, quantas; // Para Sacar dinheiro
+    char linha[100]; // Leitura de stdin
+    int valor_saque; // Para Sacar dinheiro
     int saque_final[4] = {0,0,0,0}; // Notas entregues
+    int n100, n50, n20, r1, r2, r3, max, achou;
 
     // HISTÓRICO
     char hist_tipo[100][10]; // "SAQUE" ou "ABASTECER"
@@ -35,7 +36,12 @@ int main () {
     do { // Toda vez que o case quebrar, ele volta ao menu
         printf("\nMenu Inicial \n\n 0 - Exibir Notas Disponíveis\n 1 - Abastecer ATM\n 2 - Sacar Dinheiro\n 3 - Exibir Histórico\n 9 - Sair\n\n Escolha uma operação: "); // mais opção 3
         fgets(linha, sizeof(linha), stdin); // Lê o que usuário digita, não trava com letra e não deixa enter sobrando
-        opcao_menu = atoi(linha); // Texto inválido vira 0
+
+        if (linha[0] < '0' || linha[0] > '9') {
+            opcao_menu = -1; // Opção do menu - letra ou enter vazio
+        } else {
+            opcao_menu = atoi(linha);
+        }
 
         // OPÇOES
         switch (opcao_menu) {
@@ -85,16 +91,28 @@ int main () {
                 if (valor_saque <= 0 || valor_saque % 10 != 0) {
                     printf("\nValor inválido. Digite um múltiplo de 10\n");
                 } else {
-                    resto = valor_saque;
-                    for (i = 3; i >= 0; i--) { // Da nota de maior valor para a menor
-                        quantas = resto / valores_notas[i];   // Quantas notas cabem no valor
-                        if (quantas > qtde_notas[i]) {
-                            quantas = qtde_notas[i];   // Garante que não passa da qtde_notas disponível
-                        }
-                        saque_final[i] = quantas;
-                        resto = resto - quantas * valores_notas[i]; // Realiza o uso das notas
+                    achou = 0;
+                    for (i=0; i < 4; i++) {
+                        saque_final[i] = 0;
                     }
-                    if (resto == 0) {
+                    max = valor_saque / 100; if (max > qtde_notas[3]) max = qtde_notas[3];
+                    for (n100 = max; n100 >= 0 && !achou; n100--) {
+                        r1 = valor_saque - n100 * 100;
+                        max = r1 / 50; if (max > qtde_notas[2]) max = qtde_notas[2];
+                        for (n50 = max; n50 >= 0 && !achou; n50--) {
+                            r2 = r1 - n50 * 50;
+                            max = r2 / 20; if (max > qtde_notas[1]) max = qtde_notas[1];
+                            for (n20 = max; n20 >= 0 && !achou; n20--) {
+                                r3 = r2 - n20 * 20;
+                                if (r3 % 10 == 0 && r3 / 10 <= qtde_notas[0]) {
+                                    saque_final[3] = n100; saque_final[2] = n50;
+                                    saque_final[1] = n20;  saque_final[0] = r3 / 10;
+                                    achou = 1;
+                                }
+                            }
+                        }
+                    }
+                    if (achou == 1) {
                         for (i = 0; i < 4; i++) {
                             qtde_notas[i] = qtde_notas[i] - saque_final[i]; // Notas supriram o valor do saque
                         }
