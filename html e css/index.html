@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Cash Dispenser</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+
+    <!-- ============ CABEÇALHO ============ -->
+    <header class="header">
+        <div class="header-logo">
+            <i class="bi bi-bank"></i>
+        </div>
+
+        <div class="header-title">
+            <h1>Simulador Cash Dispenser</h1>
+            <p>UNICSUL - ver00</p>
+        </div>
+
+        <div class="header-date">
+            <i class="bi bi-calendar-event"></i>
+            <span id="current-date">00/00/0000</span>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ============ MENU ============ -->
+        <section id="menu">
+            <h2>Menu de Operações</h2>
+
+            <!-- Cada card é um link: o card inteiro fica clicável -->
+            <div class="menu-cards">
+                <a href="#notes" class="menu-card menu-card-notes">
+                    <i class="bi bi-cash-stack"></i>
+                    <span>Exibir Notas</span>
+                </a>
+
+                <a href="#withdraw" class="menu-card menu-card-refill">
+                    <i class="bi bi-piggy-bank"></i>
+                    <span>Abastecer ATM</span>
+                </a>
+
+                <a href="#withdraw" class="menu-card menu-card-withdraw">
+                    <i class="bi bi-wallet2"></i>
+                    <span>Sacar Dinheiro</span>
+                </a>
+
+                <a href="#history" class="menu-card menu-card-history">
+                    <i class="bi bi-receipt-cutoff"></i>
+                    <span>Exibir Histórico</span>
+                </a>
+            </div>
+        </section>
+
+
+        <!-- ============ EXIBIR NOTAS ============ -->
+        <section id="notes">
+            <h2>Exibir Notas</h2>
+
+            <article class="card">
+                <div class="notes-grid">
+
+                    <div class="note-card">
+                        <span class="note-value">R$ 10</span>
+                        <div class="note-count">
+                            <span class="note-label">Qtde Notas</span>
+                            <span class="note-number" id="count-10">0</span>
+                        </div>
+                    </div>
+
+                    <div class="note-card">
+                        <span class="note-value">R$ 20</span>
+                        <div class="note-count">
+                            <span class="note-label">Qtde Notas</span>
+                            <span class="note-number" id="count-20">0</span>
+                        </div>
+                    </div>
+
+                    <div class="note-card">
+                        <span class="note-value">R$ 50</span>
+                        <div class="note-count">
+                            <span class="note-label">Qtde Notas</span>
+                            <span class="note-number" id="count-50">0</span>
+                        </div>
+                    </div>
+
+                    <div class="note-card">
+                        <span class="note-value">R$ 100</span>
+                        <div class="note-count">
+                            <span class="note-label">Qtde Notas</span>
+                            <span class="note-number" id="count-100">0</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <p class="total">
+                    <span>Total:</span>
+                    <span id="total-amount">R$ 0,00</span>
+                </p>
+            </article>
+        </section>
+
+
+        <!-- ============ SACAR DINHEIRO / ABASTECER ============ -->
+        <section id="withdraw">
+            <h2>Sacar Dinheiro</h2>
+
+            <article class="card">
+
+                <!-- Campo onde o usuário digita o valor.
+                     placeholder = dica que some ao digitar | min = valor mínimo | step = pulo das setinhas -->
+                <div class="amount-field">
+                    <input type="number" id="amount-input" placeholder="R$ 000,00" min="0" step="10">
+                </div>
+
+                <!-- Botões que somam uma nota ao valor digitado -->
+                <div class="quick-buttons">
+                    <button type="button" id="add-10" class="quick-button">R$ 10</button>
+                    <button type="button" id="add-20" class="quick-button">R$ 20</button>
+                    <button type="button" id="add-50" class="quick-button">R$ 50</button>
+                    <button type="button" id="add-100" class="quick-button">R$ 100</button>
+                </div>
+
+                <!-- Botões de ação -->
+                <div class="action-buttons">
+                    <button type="button" id="withdraw-button" class="action-button">
+                        <i class="bi bi-wallet2"></i>
+                        <span>Sacar Dinheiro</span>
+                    </button>
+
+                    <button type="button" id="refill-button" class="action-button">
+                        <i class="bi bi-piggy-bank"></i>
+                        <span>Abastecer ATM</span>
+                    </button>
+                </div>
+
+            </article>
+        </section>
+
+
+        <!-- ============ RESULTADO: SAQUE REALIZADO ============ -->
+        <section id="withdraw-success">
+            <article class="result-card result-success">
+
+                <div class="result-title">
+                    <i class="bi bi-check-circle"></i>
+                    <p>Saque realizado com sucesso!</p>
+                </div>
+
+                <div class="result-body">
+                    <div class="result-amount">
+                        <span>Valor do Saque</span>
+                        <span id="withdraw-amount">R$ 0,00</span>
+                    </div>
+
+                    <div class="result-notes">
+                        <div class="result-note">
+                            <span>R$ 10</span>
+                            <span id="used-10">0</span>
+                        </div>
+                        <div class="result-note">
+                            <span>R$ 20</span>
+                            <span id="used-20">0</span>
+                        </div>
+                        <div class="result-note">
+                            <span>R$ 50</span>
+                            <span id="used-50">0</span>
+                        </div>
+                        <div class="result-note">
+                            <span>R$ 100</span>
+                            <span id="used-100">0</span>
+                        </div>
+                    </div>
+                </div>
+
+            </article>
+        </section>
+
+
+        <!-- ============ RESULTADO: SAQUE NEGADO ============ -->
+        <section id="withdraw-denied">
+            <article class="result-card result-denied">
+
+                <div class="result-title">
+                    <i class="bi bi-x-circle"></i>
+                    <p>Saque negado!</p>
+                </div>
+
+                <p class="result-reason">
+                    Motivo: <span id="denied-reason">...</span>
+                </p>
+
+            </article>
+        </section>
+
+
+        <!-- ============ HISTÓRICO ============ -->
+        <section id="history">
+            <h2>Exibir Histórico</h2>
+
+            <article class="card">
+                <!-- Cada linha usa uma classe de tipo: withdraw, refill ou denied.
+                     O CSS usa essa classe para trocar a cor do ícone. -->
+                <div id="history-list">
+
+                    <p class="history-item withdraw">
+                        <i class="bi bi-arrow-up-right"></i>
+                        <span class="history-text">Saque - <span class="history-amount">R$ 0,00</span></span>
+                        <span class="history-date">00/00/0000</span>
+                    </p>
+
+                    <p class="history-item refill">
+                        <i class="bi bi-arrow-down-left"></i>
+                        <span class="history-text">Abastecimento - <span class="history-amount">R$ 0,00</span></span>
+                        <span class="history-date">00/00/0000</span>
+                    </p>
+
+                    <p class="history-item denied">
+                        <i class="bi bi-x-lg"></i>
+                        <span class="history-text">Saque negado - <span class="history-amount">R$ 0,00</span></span>
+                        <span class="history-date">00/00/0000</span>
+                    </p>
+
+                </div>
+            </article>
+        </section>
+
+    </main>
+
+    <!-- JavaScript: faz a ponte entre a página e o programa em C -->
+    <script src="script.js"></script>
+</body>
+</html>
